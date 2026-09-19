@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sonik
 
-## Getting Started
+A connected event ecosystem — discover events, buy tickets, manage an
+organization, and scan attendees in — built from the [Sonik Behance
+concept](https://www.behance.net/gallery/254502087/Sonik-SaaS-ecosystem-for-event-organizators)
+as a Next.js (App Router) site with Tailwind CSS v4.
 
-First, run the development server:
+All data (events, tickets, orders, team members, analytics) is static mock
+data in [`lib/data.ts`](lib/data.ts) — there is no database or backend.
+Sign-in for both the public site and the organizer portal is a mock flow
+that accepts any credentials.
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other scripts: `npm run build`, `npm run start`, `npm run lint`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## What's here
 
-## Learn More
+**Promo website** (`app/(marketing)`) — the public site: home page with a
+featured-event hero and category browsing, a discover/search page with
+city, category and price/date sorting, event detail pages with a music
+sample preview and organizer follow card, a ticket checkout flow with promo
+codes, order confirmation, and a customer ticket wallet with QR-style
+tickets.
 
-To learn more about Next.js, take a look at the following resources:
+**Organizer Portal** (`app/organizer`) — a dashboard shell (sidebar +
+workspace) covering events, ticket tiers, analytics, customers, finance,
+team, orders, and settings. Sign in at `/organizer/login`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Staff scanning** (`app/scan`) — a lightweight ticket-validation flow for
+door staff: pick an event, then scan/enter a ticket code to check attendees
+in against live per-tier counts.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project structure
 
-## Deploy on Vercel
+```
+app/
+  (marketing)/     public site — home, events, checkout, tickets, login
+  organizer/       organizer portal — dashboard, events, team, finance...
+  scan/            staff check-in flow
+components/        shared UI (event cards, buttons, icons, nav, etc.)
+lib/
+  types.ts         shared TypeScript types
+  data.ts          mock events, tickets, orders, team, analytics
+  auth-context.tsx mock customer sign-in state (localStorage-backed)
+  utils.ts         formatting helpers
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Ticket QR codes are a visual-only pattern generated from the ticket code
+  (see the `ponytail:` comment in `components/qr-pattern.tsx`) — not a real
+  scannable encoding.
+- Music samples use [SoundHelix](https://www.soundhelix.com)'s freely
+  licensed demo tracks as stand-ins for organizer-uploaded audio.
