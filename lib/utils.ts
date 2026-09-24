@@ -32,3 +32,11 @@ export function cn(...classes: Array<string | false | null | undefined>) {
 export function formatCompactNumber(value: number) {
   return new Intl.NumberFormat("en-US", { notation: "compact" }).format(value);
 }
+
+export function slugify(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}

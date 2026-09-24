@@ -9,7 +9,7 @@ export default function TicketsPage() {
       <h1 className="font-display text-3xl tracking-wide">Ticket Wallet</h1>
       <p className="mt-2 text-muted">Every ticket you&apos;ve bought, in one place.</p>
       <div className="mt-8">
-        <WalletTabs tickets={tickets} eventsById={eventsById} />
+        <WalletTabs tickets={tickets} eventsById={eventsById} events={events} />
       </div>
     </div>
   );

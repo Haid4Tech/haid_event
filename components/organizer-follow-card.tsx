@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { formatCompactNumber } from "@/lib/utils";
+import { toggleFollow, useFollowedOrganizers } from "@/lib/follows-store";
 
 export function OrganizerFollowCard({
   name,
@@ -10,7 +10,7 @@ export function OrganizerFollowCard({
   name: string;
   followers: number;
 }) {
-  const [following, setFollowing] = useState(false);
+  const following = useFollowedOrganizers().includes(name);
   const initial = name.charAt(0).toUpperCase();
 
   return (
@@ -28,7 +28,7 @@ export function OrganizerFollowCard({
       </div>
       <button
         type="button"
-        onClick={() => setFollowing((f) => !f)}
+        onClick={() => toggleFollow(name)}
         className={`shrink-0 rounded-full border px-4 py-2 text-sm font-medium active:scale-[0.97] ${
           following
             ? "border-border bg-bg-elevated text-fg hover:bg-panel"
