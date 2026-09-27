@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +8,8 @@ import { LinkButton } from "@/components/ui/button";
 import { SamplePlayButton } from "@/components/sample-play-button";
 import { CalendarIcon, PinIcon, TagIcon } from "@/components/icons";
 import { OrganizerFollowCard } from "@/components/organizer-follow-card";
+import { RepShareCard } from "@/components/rep-share-card";
+import { RepInviteBanner } from "@/components/rep-invite-banner";
 
 export default async function EventDetailPage(props: PageProps<"/events/[slug]">) {
   const { slug } = await props.params;
@@ -36,6 +39,9 @@ export default async function EventDetailPage(props: PageProps<"/events/[slug]">
         </div>
 
         <div>
+          <Suspense fallback={null}>
+            <RepInviteBanner />
+          </Suspense>
           <p className="text-sm text-muted">{event.organizer}</p>
           <h1 className="mt-1 font-display text-4xl leading-tight tracking-wide sm:text-5xl">
             {event.title}
@@ -60,8 +66,9 @@ export default async function EventDetailPage(props: PageProps<"/events/[slug]">
             <LinkButton href={`/events/${event.slug}/checkout`}>Buy Now</LinkButton>
           </div>
 
-          <div className="mt-8 max-w-md">
+          <div className="mt-8 flex max-w-md flex-col gap-4">
             <OrganizerFollowCard name={event.organizer} followers={event.organizerFollowers} />
+            <RepShareCard eventSlug={event.slug} />
           </div>
 
           <div className="mt-10">

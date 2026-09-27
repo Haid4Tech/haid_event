@@ -24,6 +24,9 @@ export default async function OrderConfirmationPage(
     return { name, qty: Number(qty), price: Number(price) };
   });
 
+  const refParam = searchParams.ref;
+  const ref = typeof refParam === "string" ? refParam : undefined;
+
   const promoParam = searchParams.promo;
   const [promoCode, promoDiscount] = typeof promoParam === "string"
     ? promoParam.split(":")
@@ -41,6 +44,11 @@ export default async function OrderConfirmationPage(
       <p className="mt-2 text-muted">
         A confirmation has been generated for {event.title}.
       </p>
+      {ref && (
+        <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-2 text-sm text-lilac">
+          Booked via @{ref}&apos;s rep link — thanks for supporting them 🎉
+        </p>
+      )}
 
       <div className="mt-8 rounded-2xl border border-border bg-panel p-5">
         <div className="flex items-center justify-between">

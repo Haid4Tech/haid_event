@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { getEventBySlug } from "@/lib/data";
 import { CheckoutForm } from "./checkout-form";
@@ -16,7 +17,9 @@ export default async function CheckoutPage(
         {event.title}
       </h1>
       <div className="mt-8">
-        <CheckoutForm event={event} />
+        <Suspense fallback={null}>
+          <CheckoutForm event={event} />
+        </Suspense>
       </div>
     </div>
   );

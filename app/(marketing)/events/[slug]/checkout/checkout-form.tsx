@@ -1,10 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { Event } from "@/lib/types";
 import { formatMoney } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { recordRepSale } from "@/lib/rep-store";
 
 const PROMO_CODES: Record<string, number> = {
   SONIK10: 0.1,
@@ -13,6 +14,8 @@ const PROMO_CODES: Record<string, number> = {
 
 export function CheckoutForm({ event }: { event: Event }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const ref = searchParams.get("ref");
   const [qty, setQty] = useState<Record<string, number>>({});
   const [promoInput, setPromoInput] = useState("");
   const [promo, setPromo] = useState<{ code: string; discount: number } | null>(null);
@@ -56,6 +59,10 @@ export function CheckoutForm({ event }: { event: Event }) {
     const params = new URLSearchParams();
     lines.forEach((l) => params.append("tier", `${l.tier.name}:${l.qty}:${l.tier.price}`));
     if (promo) params.set("promo", `${promo.code}:${discount}`);
+    if (ref) {
+      params.set("ref", ref);
+      recordRepSale(ref, lines.reduce((sum, l) => sum + l.qty, 0));
+    }
     router.push(`/orders/${event.slug}?${params.toString()}`);
   }
 
