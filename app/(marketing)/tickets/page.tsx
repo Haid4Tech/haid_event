@@ -1,7 +1,18 @@
+import { redirect } from "next/navigation";
 import { events, tickets } from "@/lib/data";
+import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/is-configured";
 import { WalletTabs } from "./wallet-tabs";
 
-export default function TicketsPage() {
+export default async function TicketsPage() {
+  if (isSupabaseConfigured()) {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) redirect("/login");
+  }
+
   const eventsById = Object.fromEntries(events.map((e) => [e.id, e]));
 
   return (

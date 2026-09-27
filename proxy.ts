@@ -1,8 +1,9 @@
 import { type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/proxy";
+import { isSupabaseConfigured } from "@/lib/supabase/is-configured";
 
 export async function proxy(request: NextRequest) {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+  if (!isSupabaseConfigured()) {
     return;
   }
   return await updateSession(request);
